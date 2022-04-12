@@ -1,7 +1,11 @@
 <resources>
-    <string name="app_name">SmartBin</string>
+    <string name="app_name">Genie Bin</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_scanner">Scanner</string>
+    <string name="title_profile">Profile</string>
+    <string name="login_title">Increase sustainability</string>
+    <string name="login_button_label">Continue with Google</string>
+    <string name="text_terms_and_conditions">By using our app, you agree to our <b><u>terms of service</u></b> &amp; <b><u>privacy policy</u></b></string>
+    <string name="login_subtitle">Let\'s help you to dispose off waste in a fun and rewarding way. Creating a cleaner and more sustainable surrounding.</string>
 </resources>

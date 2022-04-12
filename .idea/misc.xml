@@ -3,7 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/SmartBin/app/src/main/res/drawable/bg_round_bottom_nav.xml" value="0.2635" />
+        <entry key="..\:/SmartBin/app/src/main/res/drawable/round_account_circle_24.xml" value="0.2635" />
+        <entry key="..\:/SmartBin/app/src/main/res/drawable/round_qr_code_scanner_24.xml" value="0.2635" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/activity_home.xml" value="0.358695652173913" />
+        <entry key="..\:/SmartBin/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/SmartBin/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
       </map>
     </option>
