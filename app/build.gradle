@@ -1,8 +1,10 @@
-plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
+apply {
+    plugin 'com.android.application'
+    plugin 'kotlin-android'
+    plugin 'kotlin-kapt'
+    plugin 'dagger.hilt.android.plugin'
 }
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdk 31
@@ -45,6 +47,24 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+
+    //Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //QR lib
+    implementation 'com.github.yuriy-budiyev:code-scanner:2.1.2'
 
     //Timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
