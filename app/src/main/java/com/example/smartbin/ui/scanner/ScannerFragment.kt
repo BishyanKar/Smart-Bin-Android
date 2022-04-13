@@ -19,7 +19,7 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
-import com.example.smartbin.databinding.FragmentDashboardBinding
+import com.example.smartbin.databinding.FragmentScannerBinding
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -27,7 +27,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class ScannerFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentScannerBinding? = null
 
     private val scannerViewModel by viewModels<ScannerViewModel>()
 
@@ -62,7 +62,7 @@ class ScannerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentScannerBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
 
@@ -71,24 +71,6 @@ class ScannerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkingPermissionIsEnabled()
-    }
-
-    private fun checkingPermissionIsEnabled() {
-        if (ContextCompat.checkSelfPermission(context?.applicationContext!!, CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context?.applicationContext!!, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(context?.applicationContext!!, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                startQRScanner()
-        } else {
-            requestPermissions()
-        }
-    }
-
-    private fun requestPermissions() {
-        requestMultiplePermissionForScanner.launch(arrayOf(CAMERA,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION))
-    }
-
-
-    private fun startQRScanner() {
         scannerView = binding.scannerView
         mCodeScanner = CodeScanner(requireContext(), scannerView!!)
         mCodeScanner?.decodeCallback = DecodeCallback { result ->
@@ -103,6 +85,33 @@ class ScannerFragment : Fragment() {
                     Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkingPermissionAndStartScanner()
+    }
+
+    override fun onStop() {
+        mCodeScanner?.releaseResources()
+        super.onStop()
+    }
+
+    private fun checkingPermissionAndStartScanner() {
+        if (ContextCompat.checkSelfPermission(context?.applicationContext!!, CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(context?.applicationContext!!, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(context?.applicationContext!!, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                startQRScanner()
+        } else {
+            requestPermissions()
+        }
+    }
+
+    private fun requestPermissions() {
+        requestMultiplePermissionForScanner.launch(arrayOf(CAMERA,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION))
+    }
+
+
+    private fun startQRScanner() {
         mCodeScanner?.startPreview()
     }
 
