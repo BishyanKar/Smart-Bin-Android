@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="10dp"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_icon_received"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.2"
+                android:layout_marginHorizontal="20dp"
+                android:src="@drawable/round_call_received_24"
+                />
+
+            <LinearLayout
+                android:id="@+id/ll_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/iv_icon_received"
+                app:layout_constraintTop_toTopOf="@id/iv_icon_received"
+                app:layout_constraintBottom_toBottomOf="@id/iv_icon_received"
+                android:layout_marginStart="20dp"
+                android:orientation="horizontal"
+                >
+                <ImageButton
+                    android:id="@+id/iv_coin"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/shape_circle"
+                    android:src="@drawable/ic_blockchain"
+                    android:padding="10dp"
+                    android:scaleType="centerInside"
+                    android:stateListAnimator="@null"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_coin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="700"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="12dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/material_blue_grey_700"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.2"
+                android:layout_marginHorizontal="20dp"
+                android:text="14/04/2022"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/material_blue_grey_700"
+                />
+
+            <ImageView
+                android:id="@+id/iv_location"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toBottomOf="@id/ll_coin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="20dp"
+                android:src="@drawable/round_place_24"
+                />
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/iv_location"
+                app:layout_constraintTop_toTopOf="@id/iv_location"
+                app:layout_constraintBottom_toBottomOf="@id/iv_location"
+                android:layout_marginStart="20dp"
+                android:text="Location info"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/material_blue_grey_700"
+                />
+
+            <TextView
+                android:id="@+id/tv_ref_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/tv_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="20dp"
+                app:layout_constraintBottom_toBottomOf="@id/tv_location"
+                android:text="Ref Id: 11491165785"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/material_blue_grey_700"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
