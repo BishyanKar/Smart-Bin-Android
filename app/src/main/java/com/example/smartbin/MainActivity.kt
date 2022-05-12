@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.example.smartbin.databinding.ActivityMainBinding
+import com.example.smartbin.viewmodel.AuthViewModel
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,8 +22,11 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -28,8 +34,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    private lateinit var sharedPreferences: SharedPreferences
+    @Inject lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+
+    private val authViewModel by viewModels<AuthViewModel>()
 
     private var startSignInActivityForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if(result.resultCode == Activity.RESULT_OK) {
@@ -108,8 +116,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        if(user!=null)
+        editor = sharedPreferences.edit()
+        if(user!=null && sharedPreferences.getString(Constants.KEY_AUTH_TOKEN,null) == null)
         {
+            user.getIdToken(false).addOnSuccessListener { token ->
+                editor.putString(Constants.KEY_ID_TOKEN, token.token)
+                editor.apply()
+                authViewModel.login().observe(this, Observer {
+                    if(it.body!=null){
+                        editor.putString(Constants.KEY_AUTH_TOKEN, it.body.token)
+                        editor.apply()
+                        startActivity(Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
+                    }
+                    else {
+                        Timber.d(it.errorMessage)
+                    }
+                })
+            }
+                .addOnFailureListener {
+                    Timber.e(it.message)
+                    Toast.makeText(this, "${it.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+        else if(user != null) {
             startActivity(Intent(this, HomeActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK))
         }
         else {
