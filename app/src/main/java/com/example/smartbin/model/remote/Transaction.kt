@@ -18,7 +18,7 @@ class Transaction {
 
     @SerializedName("coins")
     @Expose
-    var coins: Int? = null
+    var coins: Double? = null
 
     @SerializedName("wasteType")
     @Expose
@@ -26,11 +26,11 @@ class Transaction {
 
     @SerializedName("height")
     @Expose
-    var height: Int? = null
+    var height: Double? = null
 
     @SerializedName("weight")
     @Expose
-    var weight: Int? = null
+    var weight: Double? = null
 
     @SerializedName("status")
     @Expose
