@@ -71,7 +71,7 @@ object CoreModule {
         return ScannerRepo()
     }
     @Provides
-    fun provideProfileRepository(): ProfileRepo {
-        return ProfileRepo()
+    fun provideProfileRepository(apiService: ApiService): ProfileRepo {
+        return ProfileRepo(apiService)
     }
 }

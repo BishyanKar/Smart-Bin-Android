@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.smartbin.Constants
 import com.example.smartbin.R
+import com.example.smartbin.adapter.TransactionAdapter
 import com.example.smartbin.databinding.FragmentProfileBinding
 import com.example.smartbin.model.remote.User
 import com.google.gson.Gson
@@ -33,6 +34,8 @@ class ProfileFragment : Fragment() {
     private lateinit var editor: SharedPreferences.Editor
 
     private lateinit var user: User
+
+    private lateinit var transactionAdapter: TransactionAdapter
 
     private val profileViewModel by viewModels<ProfileViewModel>()
     // This property is only valid between onCreateView and
@@ -54,7 +57,26 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         editor = sharedPreferences.edit()
+        initRecyclerView()
         initUser()
+    }
+
+    private fun initRecyclerView() {
+        transactionAdapter = TransactionAdapter(requireContext())
+        binding.rvHistory.adapter = transactionAdapter
+    }
+
+    private fun getAllTransactions() {
+        profileViewModel.getAllTransactions().observe(viewLifecycleOwner, Observer { response ->
+            if(response.body!=null) {
+                val transactionResponse = response.body
+                transactionAdapter.submitList(transactionResponse.transactions)
+            }
+            else {
+                Timber.e(response.errorMessage)
+                Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun initUI() {
@@ -71,6 +93,7 @@ class ProfileFragment : Fragment() {
         }catch (e: Exception) {
             Timber.e(e.message)
         }
+        getAllTransactions()
     }
 
     private fun initUser() {
