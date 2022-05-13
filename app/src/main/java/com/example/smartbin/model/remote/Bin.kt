@@ -51,4 +51,6 @@ class Bin {
     @SerializedName("transactionId")
     @Expose
     var transactionId: String? = null
+
+    var relativeDistance: Long = 0
 }

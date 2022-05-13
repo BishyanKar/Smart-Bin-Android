@@ -22,8 +22,4 @@ class ProfileViewModel @Inject constructor(private val profileRepo: ProfileRepo)
     fun getAllTransactions(): LiveData<ApiResponse<TransactionResponse>> {
         return profileRepo.getAllTransactions()
     }
-
-    fun getAllBins(): LiveData<ApiResponse<BinResponse>> {
-        return profileRepo.getAllBins()
-    }
 }

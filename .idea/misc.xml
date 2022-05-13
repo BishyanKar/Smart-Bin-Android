@@ -12,12 +12,15 @@
         <entry key="..\:/SmartBin/app/src/main/res/drawable/round_qr_code_scanner_24.xml" value="0.2635" />
         <entry key="..\:/SmartBin/app/src/main/res/drawable/shape_circle.xml" value="0.291" />
         <entry key="..\:/SmartBin/app/src/main/res/drawable/shape_circlular_rectangle.xml" value="0.291" />
+        <entry key="..\:/SmartBin/app/src/main/res/drawable/shape_round_rectangle.xml" value="0.286" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/activity_home.xml" value="0.358695652173913" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/fragment_dashboard.xml" value="0.36666666666666664" />
+        <entry key="..\:/SmartBin/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/fragment_notifications.xml" value="0.36666666666666664" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/fragment_scanner.xml" value="0.2504528985507246" />
+        <entry key="..\:/SmartBin/app/src/main/res/layout/item_bin.xml" value="0.36666666666666664" />
         <entry key="..\:/SmartBin/app/src/main/res/layout/layout_item_history.xml" value="0.36666666666666664" />
         <entry key="..\:/SmartBin/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
       </map>

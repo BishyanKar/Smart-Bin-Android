@@ -67,8 +67,8 @@ object CoreModule {
 
 
     @Provides
-    fun provideHomeRepository(): HomeRepo {
-        return HomeRepo()
+    fun provideHomeRepository(apiService: ApiService): HomeRepo {
+        return HomeRepo(apiService)
     }
     @Provides
     fun provideScannerRepository(): ScannerRepo {

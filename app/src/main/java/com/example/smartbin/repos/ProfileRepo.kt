@@ -17,8 +17,4 @@ class ProfileRepo @Inject constructor(private val apiService: ApiService){
     fun getAllTransactions(): LiveData<ApiResponse<TransactionResponse>> {
         return apiService.getAllTransactions()
     }
-
-    fun getAllBins(): LiveData<ApiResponse<BinResponse>> {
-        return apiService.getAllBins()
-    }
 }
