@@ -24,16 +24,23 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
+import com.example.smartbin.Constants
 import com.example.smartbin.R
 import com.example.smartbin.databinding.FragmentScannerBinding
+import com.example.smartbin.model.remote.Dispose
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import io.socket.client.IO
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import org.json.JSONObject
 import timber.log.Timber
 import java.io.IOException
+import java.net.URISyntaxException
 import java.util.*
 
 
@@ -62,6 +69,10 @@ class ScannerFragment : Fragment() {
     var scannerView: CodeScannerView? = null
 
     private lateinit var requestMultiplePermissionForScanner: ActivityResultLauncher<Array<String>>
+
+
+    private var mSocket: Socket? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +121,22 @@ class ScannerFragment : Fragment() {
             }
         }
 
+        try {
+            mSocket = IO.socket("http://chat.socket.io")
+        } catch (e: URISyntaxException) {
+            e.message
+        }
+        mSocket?.on(Constants.EVENT_SUCCESS, Emitter.Listener {
+            val data = it[0]
+            Timber.d("$data")
+        })
+
+        mSocket?.on(Constants.EVENT_TRANSACTION_COMPLETE, Emitter.Listener {
+            val data = it[0]
+            Timber.d("$data")
+        })
+        mSocket?.connect()
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
@@ -133,12 +160,13 @@ class ScannerFragment : Fragment() {
         super.onStop()
     }
 
-    private fun startDispose() {
+    private fun startDispose(binId: String) {
+        if(currentLatitude !=null && currentLongitude != null)
+        {
+            val dispose = Dispose(binId, arrayOf(currentLatitude, currentLongitude), wasteType)
 
-    }
-
-    private fun getLatLong() {
-
+            mSocket?.emit(Constants.EVENT_DISPOSE, dispose)
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -234,12 +262,13 @@ class ScannerFragment : Fragment() {
         }
     }
 
-    private fun showChooserDialog() {
+    private fun showChooserDialog(binId: String) {
         val builder = MaterialAlertDialogBuilder(requireContext())
         val wasteTypes = arrayOf("Wet", "Dry")
 
         builder.setItems(wasteTypes) { dialogInterface, which ->
             wasteType = wasteTypes[which]
+//            startDispose(binId)
             dialogInterface.dismiss()
         }
 
@@ -295,12 +324,18 @@ class ScannerFragment : Fragment() {
     }
 
     private fun isValid(qrCode: String) {
-        showChooserDialog()
+        showChooserDialog(qrCode)
     }
 
     override fun onDestroyView() {
         _binding = null
         fusedLocationProviderClient!!.removeLocationUpdates(locationCallback!!)
+
+        mSocket?.disconnect()
+
+        mSocket?.off(Constants.EVENT_DISPOSE)
+        mSocket?.off(Constants.EVENT_SUCCESS)
+        mSocket?.off(Constants.EVENT_TRANSACTION_COMPLETE)
         super.onDestroyView()
     }
 
