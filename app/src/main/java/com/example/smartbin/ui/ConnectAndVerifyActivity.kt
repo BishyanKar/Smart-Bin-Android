@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.smartbin.Constants
 import com.example.smartbin.R
+import com.example.smartbin.adapter.EnterPhraseAdapter
+import com.example.smartbin.adapter.EnterPhraseAdapterListener
 import com.example.smartbin.databinding.ActivityConnectAndVerifyBinding
 import com.example.smartbin.model.remote.User
 import com.example.smartbin.ui.profile.ProfileViewModel
@@ -16,11 +18,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class ConnectAndVerifyActivity : AppCompatActivity() {
+class ConnectAndVerifyActivity : AppCompatActivity(), EnterPhraseAdapterListener {
 
     private val profileViewModel by viewModels<ProfileViewModel>()
 
     private lateinit var user: User
+
+    private lateinit var enterPhraseAdapter: EnterPhraseAdapter
 
     private lateinit var _binding: ActivityConnectAndVerifyBinding
     private val binding get() = _binding
@@ -29,46 +33,64 @@ class ConnectAndVerifyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         _binding = ActivityConnectAndVerifyBinding.inflate(layoutInflater)
-
+        supportActionBar?.hide()
         setContentView(binding.root)
-        toggleProgressBar(true)
-        initUser()
+
+        toggleConfirmButton(false)
+
+        initUI()
+        initListeners()
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        enterPhraseAdapter = EnterPhraseAdapter(this)
+        binding.rvEnterPhrase.adapter = enterPhraseAdapter
+        enterPhraseAdapter.submitList(arrayListOf(1,2,3,4,5,6,7,8,9,10,11,12))
+    }
+    private fun initListeners() {
+        binding.btnConfirm.setOnClickListener {
+            // call /connect route
+        }
+        binding.actionBar.ivBtnActionBarBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    private fun toggleConfirmButton(flag: Boolean) {
+        if(flag) {
+            binding.btnConfirm.isClickable = true
+            binding.btnConfirm.isFocusable = true
+            binding.btnConfirm.isEnabled = true
+        }
+        else {
+            binding.btnConfirm.isClickable = false
+            binding.btnConfirm.isFocusable = false
+            binding.btnConfirm.isEnabled = false
+        }
     }
 
     private fun initUI() {
-
+        binding.actionBar.ivBtnReset.visibility = View.INVISIBLE
+        binding.actionBar.tvActionBarTitle.text = getString(R.string.connect_wallet)
     }
 
-    private fun toggleProgressBar(flag: Boolean) {
-        if(flag) {
-            binding.progressCircular.visibility = View.VISIBLE
-            binding.clContainer.visibility = View.GONE
+    override fun textChanged() {
+        profileViewModel.currentPhrase = ""
+        val keyList = enterPhraseAdapter.wordMap.keys
+        for(key in keyList){
+            profileViewModel.currentPhrase += enterPhraseAdapter.wordMap[key]?.trim()
+        }
+    }
+
+    override fun distributeWords(wordLength: Int) {
+        if(wordLength == 12){
+            toggleConfirmButton(true)
         }
         else {
-            binding.progressCircular.visibility = View.GONE
-            binding.clContainer.visibility = View.VISIBLE
+            toggleConfirmButton(false)
         }
-    }
-
-    private fun initUser() {
-        profileViewModel.getProfileInfo().observe(this, Observer { response ->
-            if(response.body!=null){
-                val profileRes = response.body
-
-                if(!profileRes.err) {
-                    user = profileRes.user!!
-                    initUI()
-                }
-                else {
-                    Timber.e(profileRes.message)
-                    Toast.makeText(this, "Some error occurred", Toast.LENGTH_SHORT).show()
-                }
-            }
-            else {
-                Timber.e(response.errorMessage)
-                Toast.makeText(this, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
-            }
-            toggleProgressBar(false)
-        })
+        enterPhraseAdapter.submitList(ArrayList())
+        enterPhraseAdapter.submitList(arrayListOf(1,2,3,4,5,6,7,8,9,10,11,12))
     }
 }

@@ -22,4 +22,6 @@
     <string name="create_new">Create new</string>
     <string name="connect_existing">Connect existing</string>
     <string name="proceed">Proceed</string>
+    <string name="connect_wallet">Connect Wallet</string>
+    <string name="please_enter_your_phrase_below">Please enter your phrase below</string>
 </resources>

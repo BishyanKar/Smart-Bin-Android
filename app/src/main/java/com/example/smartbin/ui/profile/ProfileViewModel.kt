@@ -15,6 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(private val profileRepo: ProfileRepo): ViewModel() {
 
+    var currentPhrase = ""
+
     fun getProfileInfo(): LiveData<ApiResponse<ProfileResponse>> {
         return profileRepo.getProfileInfo()
     }
