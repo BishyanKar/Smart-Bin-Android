@@ -26,14 +26,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="20sp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/poppins_semibold"
             android:textAlignment="center"
             android:textColor="@color/material_blue_grey_700"
             android:maxLines="1"
+            android:text="Pick your phrase"
             android:ellipsize="end"
             />
+        <ImageButton
+            android:id="@+id/iv_btn_reset"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/round_restart_alt_24"
+            android:background="@color/white"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="15dp"
+            android:layout_gravity="center_vertical|end"
+            app:tint="@color/material_blue_grey_700" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
