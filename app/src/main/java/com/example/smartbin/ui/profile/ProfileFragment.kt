@@ -1,5 +1,6 @@
 package com.example.smartbin.ui.profile
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.example.smartbin.R
 import com.example.smartbin.adapter.TransactionAdapter
 import com.example.smartbin.databinding.FragmentProfileBinding
 import com.example.smartbin.model.remote.User
+import com.example.smartbin.ui.WalletActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
@@ -64,6 +66,13 @@ class ProfileFragment : Fragment() {
         toggleProgressBar(true)
         initRecyclerView()
         initUser()
+        initListeners()
+    }
+
+    private fun initListeners() {
+        binding.btnRedeem.setOnClickListener {
+            startActivity(Intent(context, WalletActivity::class.java))
+        }
     }
 
     private fun toggleProgressBar(flag: Boolean) {

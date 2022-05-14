@@ -30,6 +30,7 @@ import com.example.smartbin.databinding.FragmentScannerBinding
 import com.example.smartbin.model.remote.Dispose
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
