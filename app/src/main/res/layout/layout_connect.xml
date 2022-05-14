@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="20dp"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textAlignment="center"
+                android:layout_marginTop="15dp"
+                android:textSize="20sp"
+                android:text="@string/wallet_service"
+                android:fontFamily="@font/poppins_semibold"
+                />
+
+            <TextView
+                android:id="@+id/et_folder_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                android:textSize="18sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="30dp"
+                android:textAlignment="center"
+                android:text="You don't have a wallet connected with this account"
+                android:padding="12dp"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/et_folder_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginVertical="15dp"
+                android:layout_marginHorizontal="15dp"
+                >
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:minHeight="40dp"
+                    android:text="@string/connect_existing"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:textSize="13sp"
+                    app:cornerRadius="20dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    />
+                <Button
+                    android:id="@+id/btn_create"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:minWidth="80dp"
+                    android:minHeight="40dp"
+                    android:padding="10dp"
+                    android:text="@string/create_new"
+                    android:textSize="13sp"
+                    app:cornerRadius="20dp"
+                    android:layout_margin="10dp"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="1dp"
+                    android:textColor="@color/white"
+                    />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

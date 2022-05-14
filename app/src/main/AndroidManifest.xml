@@ -22,7 +22,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GenieBin.LightOnly">
         <activity
-            android:name=".ui.WalletActivity"
+            android:name=".ui.VerifyNewWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ConnectAndVerifyActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
