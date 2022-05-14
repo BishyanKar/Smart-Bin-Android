@@ -51,6 +51,13 @@ class ConnectAndVerifyActivity : AppCompatActivity(), EnterPhraseAdapterListener
     private fun initListeners() {
         binding.btnConfirm.setOnClickListener {
             // call /connect route
+            profileViewModel.currentPhrase = ""
+            val keyList = enterPhraseAdapter.wordMap.keys
+            for(key in keyList){
+                profileViewModel.currentPhrase += enterPhraseAdapter.wordMap[key]?.trim() + " "
+            }
+            Timber.d(profileViewModel.currentPhrase)
+            Toast.makeText(this, profileViewModel.currentPhrase, Toast.LENGTH_SHORT).show()
         }
         binding.actionBar.ivBtnActionBarBack.setOnClickListener {
             onBackPressed()
@@ -76,20 +83,29 @@ class ConnectAndVerifyActivity : AppCompatActivity(), EnterPhraseAdapterListener
     }
 
     override fun textChanged() {
-        profileViewModel.currentPhrase = ""
-        val keyList = enterPhraseAdapter.wordMap.keys
-        for(key in keyList){
-            profileViewModel.currentPhrase += enterPhraseAdapter.wordMap[key]?.trim()
+        //do nothing
+        var count = 0
+        for(word in enterPhraseAdapter.wordMap.values) {
+            if(word != ""){
+                count++
+            }
         }
-    }
-
-    override fun distributeWords(wordLength: Int) {
-        if(wordLength == 12){
+        if(count == 12){
             toggleConfirmButton(true)
         }
         else {
             toggleConfirmButton(false)
         }
+
+    }
+
+    override fun distributeWords(wordLength: Int) {
+//        if(wordLength == 12){
+//            toggleConfirmButton(true)
+//        }
+//        else {
+//            toggleConfirmButton(false)
+//        }
         enterPhraseAdapter.submitList(ArrayList())
         enterPhraseAdapter.submitList(arrayListOf(1,2,3,4,5,6,7,8,9,10,11,12))
     }

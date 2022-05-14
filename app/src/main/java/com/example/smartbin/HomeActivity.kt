@@ -9,6 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.smartbin.databinding.ActivityHomeBinding
+import com.example.smartbin.ui.ConnectAndVerifyActivity
 import com.example.smartbin.ui.VerifyNewWalletActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,6 +37,6 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        startActivity(Intent(this, VerifyNewWalletActivity::class.java))
+        startActivity(Intent(this, ConnectAndVerifyActivity::class.java))
     }
 }
