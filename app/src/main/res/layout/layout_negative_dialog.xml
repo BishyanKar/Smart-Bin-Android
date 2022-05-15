@@ -29,15 +29,14 @@
 
             <TextView
                 android:id="@+id/tv_msg"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/iv_success"
-                app:layout_constraintEnd_toEndOf="@id/iv_success"
                 app:layout_constraintTop_toBottomOf="@id/iv_success"
                 android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
                 android:text="Failure"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="@color/material_blue_grey_800"
                 android:fontFamily="@font/poppins_semibold"
                 />

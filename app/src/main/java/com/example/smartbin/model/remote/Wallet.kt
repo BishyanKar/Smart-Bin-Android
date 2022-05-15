@@ -15,4 +15,12 @@ class Wallet {
     @SerializedName("_id")
     @Expose
     var id: String? = null
+
+    @SerializedName("balance")
+    @Expose
+    var balance: String = "0"
+
+    @SerializedName("nonce")
+    @Expose
+    var nonce: String? = null
 }

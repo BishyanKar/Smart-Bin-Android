@@ -3,10 +3,7 @@ package com.example.smartbin.repos
 import androidx.lifecycle.LiveData
 import com.example.smartbin.api.ApiResponse
 import com.example.smartbin.api.ApiService
-import com.example.smartbin.model.remote.BinResponse
-import com.example.smartbin.model.remote.Phrase
-import com.example.smartbin.model.remote.ProfileResponse
-import com.example.smartbin.model.remote.TransactionResponse
+import com.example.smartbin.model.remote.*
 import javax.inject.Inject
 
 class ProfileRepo @Inject constructor(private val apiService: ApiService){
@@ -27,7 +24,15 @@ class ProfileRepo @Inject constructor(private val apiService: ApiService){
         return apiService.connectToExistingWallet(Phrase(phrase))
     }
 
-    fun transfer(amount: Int) {
+    fun getWalletBalance(): LiveData<ApiResponse<BalanceResponse>> {
+        return apiService.getWalletBalance()
+    }
 
+    fun transfer() {
+
+    }
+
+    fun disconnectWallet(): LiveData<ApiResponse<ProfileResponse>> {
+        return apiService.disconnectWallet()
     }
 }

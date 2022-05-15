@@ -11,6 +11,9 @@ interface ApiService {
     @GET("users/me")
     fun getProfileInfo(): LiveData<ApiResponse<ProfileResponse>>
 
+    @GET("users/balance")
+    fun getWalletBalance(): LiveData<ApiResponse<BalanceResponse>>
+
     @GET("users/transaction")
     fun getAllTransactions(): LiveData<ApiResponse<TransactionResponse>>
 
@@ -24,5 +27,8 @@ interface ApiService {
     fun connectToExistingWallet(@Body phrase: Phrase): LiveData<ApiResponse<ProfileResponse>>
 
     @POST("users/transfer")
-    fun transfer(amount: Int)
+    fun transfer()
+
+    @PATCH("users/disconnect")
+    fun disconnectWallet(): LiveData<ApiResponse<ProfileResponse>>
 }

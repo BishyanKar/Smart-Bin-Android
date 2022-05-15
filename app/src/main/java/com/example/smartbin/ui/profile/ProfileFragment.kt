@@ -79,6 +79,10 @@ class ProfileFragment : Fragment() {
                 showRedeemDialog()
             }
         }
+        binding.llCoin.setOnClickListener {
+            toggleProgressBar(true)
+            getWalletBalance()
+        }
     }
 
     private fun showRedeemDialog() {
@@ -187,6 +191,81 @@ class ProfileFragment : Fragment() {
             else {
                 Timber.e(response.errorMessage)
                 showNegativeDialog("Wallet creation failed", DialogInterface.OnCancelListener {
+                    //do nothing
+                })
+                Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
+            }
+            toggleProgressBar(false)
+        })
+    }
+
+    private fun getWalletBalance() {
+        profileViewModel.getWalletBalance().observe(viewLifecycleOwner, Observer { response ->
+            if(response.body != null) {
+                val balanceResponse = response.body
+
+                if(!balanceResponse.error){
+                    showWalletDialog(balanceResponse.coins.toString(), balanceResponse.wallet!!.balance)
+                }
+                else {
+                    Timber.d(balanceResponse.message)
+                    Toast.makeText(context, "${balanceResponse.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                Timber.d(response.errorMessage)
+                Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
+            }
+            toggleProgressBar(false)
+        })
+    }
+
+    private fun showWalletDialog(ourCoins: String, hireCoins: String) {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_wallet, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogView)
+        val btnDisconnect = dialogView.findViewById<Button>(R.id.btn_disconnect)
+        val tvCoin = dialogView.findViewById<TextView>(R.id.tv_coin)
+        val tvHireCoin = dialogView.findViewById<TextView>(R.id.tv_hire_coin)
+
+        val dialog = builder.create()
+
+        tvCoin.text = ourCoins
+        tvHireCoin.text = hireCoins
+
+        btnDisconnect.setOnClickListener {
+            dialog.dismiss()
+            toggleProgressBar(true)
+            disconnectWallet()
+        }
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
+    }
+
+    private fun disconnectWallet() {
+        profileViewModel.disconnectWallet().observe(viewLifecycleOwner, Observer { response ->
+            if(response.body!=null) {
+                val profileResponse = response.body
+
+                if(!profileResponse.err){
+                    //success
+                    showPositiveDialog("Wallet has been disconnected. Redeem service will be impacted", DialogInterface.OnCancelListener {
+                        //do nothing
+                    }, "")
+                }
+                else {
+                    Timber.e(profileResponse.message)
+                    showNegativeDialog("Attempt to disconnect wallet was unsuccessful, please try again after a while", DialogInterface.OnCancelListener {
+                        //do nothing
+                    })
+                    Toast.makeText(context, "${profileResponse.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                Timber.e(response.errorMessage)
+                showNegativeDialog("Attempt to disconnect wallet was unsuccessful, please try again after a while", DialogInterface.OnCancelListener {
                     //do nothing
                 })
                 Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
