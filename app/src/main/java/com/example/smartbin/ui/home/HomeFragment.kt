@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.view.LayoutInflater
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.smartbin.HomeActivity
 import com.example.smartbin.R
 import com.example.smartbin.adapter.BinAdapter
+import com.example.smartbin.adapter.BinAdapterListener
 import com.example.smartbin.databinding.FragmentHomeBinding
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -40,7 +42,7 @@ import java.io.IOException
 import java.util.*
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), BinAdapterListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val homeViewModel by viewModels<HomeViewModel>()
@@ -98,7 +100,7 @@ class HomeFragment : Fragment() {
                     Timber.d("${location.altitude}")
 
                     if(!homeViewModel.binsLoaded)
-                    getAllBins()
+                        getAllBins()
                 }
             }
         }
@@ -161,7 +163,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        binAdapter = BinAdapter()
+        binAdapter = BinAdapter(this)
+        binAdapter.setLocationData(22.5394422,88.3260267)
         binding.rvAllBins.layoutManager = LinearLayoutManager(context)
         binding.rvAllBins.adapter = binAdapter
     }
@@ -228,20 +231,21 @@ class HomeFragment : Fragment() {
                 }
             } else {
                 getLocationSettings()
-                Toast.makeText(
-                    context,
-                    "Please turn on your location service",
-                    Toast.LENGTH_SHORT
-                ).show()
+//                Toast.makeText(
+//                    context,
+//                    "Please turn on your location service",
+//                    Toast.LENGTH_SHORT
+//                ).show()
             }
         }.addOnFailureListener {
             getLocationSettings()
             Toast.makeText(
                 context,
-                "Please allow Location access from the settings",
-                Toast.LENGTH_SHORT
+                "Please allow Location access from your phone settings",
+                Toast.LENGTH_LONG
             ).show()
         }
+        getLocationSettings()
     }
 
      private fun getLocationSettings() {
@@ -330,5 +334,14 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onItemClick(lat: Double, lng: Double) {
+        val gmmIntentUri = Uri.parse("geo:$lng,$lat?q=$lng,$lat")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+//        mapIntent.setPackage("com.google.android.apps.maps")
+        mapIntent.resolveActivity(activity?.packageManager!!)?.let {
+            startActivity(mapIntent)
+        }
     }
 }

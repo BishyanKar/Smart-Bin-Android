@@ -29,4 +29,6 @@
     <string name="exit">Exit</string>
     <string name="give_access">Give access</string>
     <string name="disconnect">Disconnect</string>
+    <string name="dispose_session">Dispose Session</string>
+    <string name="done">Done</string>
 </resources>

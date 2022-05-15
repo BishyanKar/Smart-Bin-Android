@@ -4,10 +4,12 @@ import android.Manifest
 import android.Manifest.permission.CAMERA
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.IntentSender.SendIntentException
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +45,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.net.URISyntaxException
 import java.util.*
+import kotlin.math.min
 
 
 @AndroidEntryPoint
@@ -148,11 +151,17 @@ class ScannerFragment : Fragment() {
         mSocket?.on(Constants.EVENT_CUSTOM_ERROR, Emitter.Listener {
             val data = it[0]
             Timber.d("$data")
+            showNegativeDialog("Dispose was not successful", DialogInterface.OnCancelListener {
+                //do nothing
+            })
         })
 
         mSocket?.on(Constants.EVENT_TRANSACTION_COMPLETE, Emitter.Listener {
             val data = it[0]
             Timber.d("$data")
+            showPositiveDialog("Dispose completed successfully", DialogInterface.OnCancelListener {
+                activity?.onBackPressed()
+            })
         })
         mSocket?.connect()
 
@@ -175,6 +184,90 @@ class ScannerFragment : Fragment() {
 
             mSocket?.emit(Constants.EVENT_DISPOSE, dispose)
         }
+    }
+
+    private fun showNegativeDialog(msg: String, onCancelListener: DialogInterface.OnCancelListener) {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_negative_dialog, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setView(dialogView)
+        val btnContinue = dialogView.findViewById<Button>(R.id.btn_continue)
+        val tvMsg = dialogView.findViewById<TextView>(R.id.tv_msg)
+
+        tvMsg.text = msg
+
+        val dialog = builder.create()
+
+        btnContinue.setOnClickListener {
+            dialog.cancel()
+        }
+
+        dialog.setOnCancelListener(onCancelListener)
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
+    }
+
+    private fun showPositiveDialog(msg: String, onCancelListener: DialogInterface.OnCancelListener) {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_positive_dialog, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setView(dialogView)
+        val btnContinue = dialogView.findViewById<Button>(R.id.btn_continue)
+        val tvMsg = dialogView.findViewById<TextView>(R.id.tv_msg)
+
+        tvMsg.text = msg
+
+        val dialog = builder.create()
+
+        btnContinue.setOnClickListener {
+            dialog.cancel()
+        }
+
+        dialog.setOnCancelListener(onCancelListener)
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
+    }
+
+    private fun showDisposeDialog() {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_confirm_dispose, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogView)
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+        val tvTimer = dialogView.findViewById<TextView>(R.id.tv_timer)
+
+        val dialog = builder.create()
+
+        btnConfirm.setOnClickListener {
+            mSocket?.emit(Constants.EVENT_DISPOSE_DONE)
+            dialog.dismiss()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.cancel()
+        }
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
+        object : CountDownTimer(15*60*1000, 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                var millis = millisUntilFinished
+                val minute = millis / 60000
+                millis %= 60000
+                val sec = millis / 1000
+                if(sec <= 0)
+                    tvTimer.text = "Time remaining: 0$minute:0$sec"
+                else tvTimer.text = "Time remaining: 0$minute:$sec"
+            }
+
+            override fun onFinish() {
+                tvTimer.text = "Time up!"
+            }
+        }.start()
     }
 
     @SuppressLint("MissingPermission")
@@ -212,6 +305,7 @@ class ScannerFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+        getLocationSettings()
     }
 
     private fun getLocationSettings() {
@@ -276,7 +370,7 @@ class ScannerFragment : Fragment() {
 
         builder.setItems(wasteTypes) { dialogInterface, which ->
             wasteType = wasteTypes[which]
-//            startDispose(binId)
+            startDispose(binId)
             dialogInterface.dismiss()
         }
 

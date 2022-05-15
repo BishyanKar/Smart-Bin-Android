@@ -10,5 +10,5 @@ class GeoLocation {
 
     @SerializedName("coordinates")
     @Expose
-    var coordinates: List<Int>? = null
+    var coordinates: List<Double>? = null
 }
