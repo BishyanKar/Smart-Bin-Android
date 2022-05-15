@@ -264,7 +264,7 @@ class ScannerFragment : Fragment() {
         if(dialog.window!=null)
             dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
         dialog.show()
-        object : CountDownTimer(15*60*1000, 1000) {
+        object : CountDownTimer(5*60*1000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 var millis = millisUntilFinished
@@ -272,8 +272,8 @@ class ScannerFragment : Fragment() {
                 millis %= 60000
                 val sec = millis / 1000
                 if(sec <= 0)
-                    tvTimer.text = "Time remaining: 0$minute:0$sec"
-                else tvTimer.text = "Time remaining: 0$minute:$sec"
+                    tvTimer.text = "0$minute:0$sec"
+                else tvTimer.text = "0$minute:$sec"
             }
 
             override fun onFinish() {
