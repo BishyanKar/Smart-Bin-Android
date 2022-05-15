@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="phrase 1"
-            android:textSize="15sp"
+            android:textSize="11sp"
             android:layout_marginVertical="5dp"
             android:layout_marginHorizontal="20dp"
             android:padding="10dp"

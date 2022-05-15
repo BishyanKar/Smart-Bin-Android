@@ -24,4 +24,12 @@ class ProfileViewModel @Inject constructor(private val profileRepo: ProfileRepo)
     fun getAllTransactions(): LiveData<ApiResponse<TransactionResponse>> {
         return profileRepo.getAllTransactions()
     }
+
+    fun connectToNewWallet(): LiveData<ApiResponse<ProfileResponse>> {
+        return profileRepo.connectToNewWallet()
+    }
+
+    fun connectToExistingWallet(phrase: String): LiveData<ApiResponse<ProfileResponse>> {
+        return profileRepo.connectToExistingWallet(phrase)
+    }
 }

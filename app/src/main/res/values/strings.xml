@@ -19,9 +19,11 @@
     <string name="confirm">Confirm</string>
     <string name="enter_amount">Enter amount</string>
     <string name="wallet_service">Wallet Service</string>
-    <string name="create_new">Create new</string>
-    <string name="connect_existing">Connect existing</string>
+    <string name="create_new">Create</string>
+    <string name="connect_existing">Connect</string>
     <string name="proceed">Proceed</string>
     <string name="connect_wallet">Connect Wallet</string>
     <string name="please_enter_your_phrase_below">Please enter your phrase below</string>
+    <string name="continue1">Continue</string>
+    <string name="close">Close</string>
 </resources>

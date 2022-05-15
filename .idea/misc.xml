@@ -28,7 +28,10 @@
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/default_button.xml" value="0.1795" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/et_bg.xml" value="0.1795" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/outline_close_24.xml" value="0.1795" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/round_cancel_24.xml" value="0.1795" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/round_check_circle_24.xml" value="0.1795" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/round_close_24.xml" value="0.1795" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/round_content_copy_24.xml" value="0.1795" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/drawable/round_restart_alt_24.xml" value="0.1795" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/activity_connect_and_verify.xml" value="0.25" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/activity_verify_new_wallet.xml" value="0.25" />
@@ -38,11 +41,14 @@
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/item_chip.xml" value="0.25" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/item_chip_selected.xml" value="0.25" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/item_enter_pharse.xml" value="0.25" />
-        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_connect.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_connect.xml" value="0.152" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_custom_action_bar.xml" value="0.25" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_item_history.xml" value="0.25" />
-        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_redeem.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_negative_dialog.xml" value="0.176" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_positive_dialog.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_redeem.xml" value="0.176" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_select_type_dialog.xml" value="0.25" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_show_phrase.xml" value="0.1875" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/layout_wallet.xml" value="0.25" />
       </map>
     </option>

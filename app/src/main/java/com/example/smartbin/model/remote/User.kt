@@ -40,6 +40,10 @@ class User {
     @Expose
     var updatedAt: String? = null
 
+    @SerializedName("wallet")
+    @Expose
+    var wallet: Wallet? = null
+
     @SerializedName("__v")
     @Expose
     var v: Int? = null

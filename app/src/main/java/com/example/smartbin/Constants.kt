@@ -8,4 +8,5 @@ object Constants {
     const val EVENT_DISPOSE = "dispose"
     const val EVENT_SUCCESS = "success"
     const val EVENT_TRANSACTION_COMPLETE = "transactionComplete"
+    const val KEY_PHRASE = "KEY_PHRASE"
 }

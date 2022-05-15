@@ -1,12 +1,14 @@
 package com.example.smartbin.ui.profile
 
-import android.content.Intent
-import android.content.SharedPreferences
+import android.app.AlertDialog
+import android.content.*
 import android.os.Bundle
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.inputmethod.EditorInfo
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,6 +20,7 @@ import com.example.smartbin.adapter.TransactionAdapter
 import com.example.smartbin.databinding.FragmentProfileBinding
 import com.example.smartbin.model.remote.User
 import com.example.smartbin.ui.ConnectAndVerifyActivity
+import com.example.smartbin.ui.VerifyNewWalletActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
@@ -69,8 +72,149 @@ class ProfileFragment : Fragment() {
 
     private fun initListeners() {
         binding.btnRedeem.setOnClickListener {
+            if(user.wallet == null) {
+                showNoWalletDialog()
+            }
+            else {
+                showRedeemDialog()
+            }
+        }
+    }
+
+    private fun showRedeemDialog() {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_redeem, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogView)
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btn_confirm)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btn_cancel)
+
+        val dialog = builder.create()
+
+        btnConfirm.setOnClickListener {
+            //todo call transfer api
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.cancel()
+        }
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
+    }
+
+    private fun showPositiveDialog(msg: String, onCancelListener: DialogInterface.OnCancelListener, phrase: String) {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_positive_dialog, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogView)
+        val btnContinue = dialogView.findViewById<Button>(R.id.btn_continue)
+        val tvMsg = dialogView.findViewById<TextView>(R.id.tv_msg)
+
+        dialogView.findViewById<LinearLayout>(R.id.layout_phrase)
+            .visibility = View.VISIBLE
+
+        val tvPhrase = dialogView.findViewById<TextView>(R.id.tv_phrase)
+        val ibCopy = dialogView.findViewById<ImageButton>(R.id.ib_copy)
+
+        tvMsg.text = msg
+        tvPhrase.text = phrase
+
+        ibCopy.setOnClickListener {
+            val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip: ClipData = ClipData.newPlainText("phrase", phrase)
+            clipboard.setPrimaryClip(clip)
+        }
+
+        val dialog = builder.create()
+
+        btnContinue.setOnClickListener {
+            dialog.cancel()
+        }
+
+        dialog.setOnCancelListener(onCancelListener)
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
+    }
+
+    private fun showNegativeDialog(msg: String, onCancelListener: DialogInterface.OnCancelListener) {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_negative_dialog, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogView)
+        val btnContinue = dialogView.findViewById<Button>(R.id.btn_continue)
+        val tvMsg = dialogView.findViewById<TextView>(R.id.tv_msg)
+
+        tvMsg.text = msg
+
+        val dialog = builder.create()
+
+        btnContinue.setOnClickListener {
+            dialog.cancel()
+        }
+
+        dialog.setOnCancelListener(onCancelListener)
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
+    }
+
+    private fun createNewWallet() {
+        profileViewModel.connectToNewWallet().observe(viewLifecycleOwner, Observer { response ->
+            if(response.body!=null) {
+                val profileResponse = response.body
+
+                if(!profileResponse.err){
+                    //success
+                    editor.putString(Constants.KEY_PHRASE, profileResponse.phrase)
+                    editor.apply()
+                    showPositiveDialog("Wallet created successfully, copy and save your phrase securely. Never lose it.", DialogInterface.OnCancelListener {
+                        startActivity(Intent(context, VerifyNewWalletActivity::class.java))
+                    }, profileResponse.phrase!!)
+                }
+                else {
+                    Timber.e(profileResponse.message)
+                    showNegativeDialog("Wallet creation failed", DialogInterface.OnCancelListener {
+                        //do nothing
+                    })
+                    Toast.makeText(context, "${profileResponse.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                Timber.e(response.errorMessage)
+                showNegativeDialog("Wallet creation failed", DialogInterface.OnCancelListener {
+                    //do nothing
+                })
+                Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
+            }
+            toggleProgressBar(false)
+        })
+    }
+
+    private fun showNoWalletDialog() {
+        val dialogView: View = layoutInflater.inflate(R.layout.layout_connect, null)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogView)
+        val btnCreate = dialogView.findViewById<Button>(R.id.btn_create)
+        val btnConnect = dialogView.findViewById<Button>(R.id.btn_connect_existing)
+
+        val dialog = builder.create()
+
+        btnCreate.setOnClickListener {
+            toggleProgressBar(true)
+            dialog.dismiss()
+            createNewWallet()
+        }
+
+        btnConnect.setOnClickListener {
+            dialog.dismiss()
             startActivity(Intent(context, ConnectAndVerifyActivity::class.java))
         }
+
+        if(dialog.window!=null)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show()
     }
 
     private fun toggleProgressBar(flag: Boolean) {
