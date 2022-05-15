@@ -13,18 +13,41 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:id="@+id/tv_all_bins"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="17sp"
-            android:text="@string/all_bins"
-            android:fontFamily="@font/poppins_semibold"
-            android:layout_margin="20dp"
-            />
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/tv_all_bins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="17sp"
+                android:text="@string/all_bins"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_margin="20dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_location"
+                android:layout_width="150dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="20dp"
+                app:drawableStartCompat="@drawable/round_place_24"
+                android:text="Location details"
+                android:drawablePadding="10dp"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="@color/material_blue_grey_800"
+                />
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_all_bins"

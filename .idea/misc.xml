@@ -43,8 +43,9 @@
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/activity_verify_new_wallet.xml" value="0.25" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/activity_wallet.xml" value="0.25" />
-        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/fragment_home.xml" value="0.176" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/fragment_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/item_bin.xml" value="0.1875" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/item_chip.xml" value="0.25" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/item_chip_selected.xml" value="0.25" />
         <entry key="..\:/StudioProjects/Smart-Bin-Android/app/src/main/res/layout/item_enter_pharse.xml" value="0.25" />

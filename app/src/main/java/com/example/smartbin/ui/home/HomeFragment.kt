@@ -95,8 +95,10 @@ class HomeFragment : Fragment() {
                     currentLatitude = location.latitude
                     currentLongitude = location.longitude
 
+                    Timber.d("${location.altitude}")
+
                     if(!homeViewModel.binsLoaded)
-                        getAllBins()
+                    getAllBins()
                 }
             }
         }
@@ -215,6 +217,8 @@ class HomeFragment : Fragment() {
                     currentLatitude = lat1
                     currentLongitude = lang1
                     //double dist = calculateDistance(lat1,lang1,lat1,lang1);
+
+                    binding.tvLocation.text = addresses[0].getAddressLine(0)
 
                     if(!homeViewModel.binsLoaded)
                         getAllBins()
