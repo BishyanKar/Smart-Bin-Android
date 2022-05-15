@@ -16,7 +16,6 @@ class EnterPhraseAdapter(private val enterPhraseAdapterListener: EnterPhraseAdap
     private lateinit var list: ArrayList<Int>
 
     private fun setData() {
-        submitList(ArrayList())
         submitList(arrayListOf(1,2,3,4,5,6,7,8,9,10,11,12))
         notifyDataSetChanged()
     }
@@ -53,9 +52,11 @@ class EnterPhraseAdapter(private val enterPhraseAdapterListener: EnterPhraseAdap
                     var i = 1
                     for(word in words) {
                         wordMap[i++] = word
+                        notifyItemChanged(i-1)
                     }
+                    binding.etPhraseInput.setText(wordMap[index])
+                    notifyItemChanged(index-1)
         //            enterPhraseAdapterListener.distributeWords(words.size)
-                    setData()
                     enterPhraseAdapterListener.textChanged()
                 }
                 else {

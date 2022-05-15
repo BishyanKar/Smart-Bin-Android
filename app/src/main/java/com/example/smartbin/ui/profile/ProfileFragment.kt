@@ -257,7 +257,8 @@ class ProfileFragment : Fragment() {
                 if(!profileResponse.err){
                     //success
                     showPositiveDialog("Wallet has been disconnected. Redeem service will be impacted", DialogInterface.OnCancelListener {
-                        //do nothing
+                        toggleProgressBar(true)
+                        initUser()
                     }, "")
                 }
                 else {
