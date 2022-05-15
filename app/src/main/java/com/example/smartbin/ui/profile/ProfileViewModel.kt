@@ -32,4 +32,8 @@ class ProfileViewModel @Inject constructor(private val profileRepo: ProfileRepo)
     fun connectToExistingWallet(phrase: String): LiveData<ApiResponse<ProfileResponse>> {
         return profileRepo.connectToExistingWallet(phrase)
     }
+
+    fun transfer(amount: Int) {
+
+    }
 }

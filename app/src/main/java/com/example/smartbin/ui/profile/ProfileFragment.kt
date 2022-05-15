@@ -109,9 +109,12 @@ class ProfileFragment : Fragment() {
         builder.setView(dialogView)
         val btnContinue = dialogView.findViewById<Button>(R.id.btn_continue)
         val tvMsg = dialogView.findViewById<TextView>(R.id.tv_msg)
+        val layoutPhrase = dialogView.findViewById<LinearLayout>(R.id.layout_phrase)
 
-        dialogView.findViewById<LinearLayout>(R.id.layout_phrase)
-            .visibility = View.VISIBLE
+        if(phrase != "") {
+            layoutPhrase.visibility = View.VISIBLE
+        }
+        else layoutPhrase.visibility = View.GONE
 
         val tvPhrase = dialogView.findViewById<TextView>(R.id.tv_phrase)
         val ibCopy = dialogView.findViewById<ImageButton>(R.id.ib_copy)

@@ -26,4 +26,6 @@
     <string name="please_enter_your_phrase_below">Please enter your phrase below</string>
     <string name="continue1">Continue</string>
     <string name="close">Close</string>
+    <string name="exit">Exit</string>
+    <string name="give_access">Give access</string>
 </resources>

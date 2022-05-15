@@ -7,7 +7,7 @@ import com.example.smartbin.model.remote.BinResponse
 import javax.inject.Inject
 
 class HomeRepo @Inject constructor(private val apiService: ApiService){
-    fun getAllBins(): LiveData<ApiResponse<BinResponse>> {
-        return apiService.getAllBins()
+    fun getAllBins(lat: Double, lng: Double): LiveData<ApiResponse<BinResponse>> {
+        return apiService.getAllBins(lat, lng)
     }
 }

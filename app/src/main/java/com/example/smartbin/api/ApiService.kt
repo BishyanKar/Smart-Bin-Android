@@ -2,10 +2,7 @@ package com.example.smartbin.api
 
 import androidx.lifecycle.LiveData
 import com.example.smartbin.model.remote.*
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     @POST("auth")
@@ -18,11 +15,14 @@ interface ApiService {
     fun getAllTransactions(): LiveData<ApiResponse<TransactionResponse>>
 
     @GET("bin")
-    fun getAllBins(): LiveData<ApiResponse<BinResponse>>
+    fun getAllBins(@Query("lat") lat: Double, @Query("lng") lng: Double): LiveData<ApiResponse<BinResponse>>
 
     @POST("users/connect")
     fun connectToNewWallet(): LiveData<ApiResponse<ProfileResponse>>
 
     @POST("users/connect")
     fun connectToExistingWallet(@Body phrase: Phrase): LiveData<ApiResponse<ProfileResponse>>
+
+    @POST("users/transfer")
+    fun transfer(amount: Int)
 }

@@ -1,10 +1,17 @@
 package com.example.smartbin
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.findFragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -12,6 +19,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.smartbin.databinding.ActivityHomeBinding
 import com.example.smartbin.ui.ConnectAndVerifyActivity
 import com.example.smartbin.ui.VerifyNewWalletActivity
+import com.example.smartbin.ui.home.HomeFragment
+import com.example.smartbin.ui.home.HomeViewModel
+import com.example.smartbin.ui.scanner.ScannerFragment
+import com.example.smartbin.viewmodel.HomeActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -22,6 +33,15 @@ class HomeActivity : AppCompatActivity() {
 
     @Inject lateinit var sharedPreferences: SharedPreferences
 
+    private val REQUEST_CHECK_SETTINGS: Int  = 889
+
+    private lateinit var navController: NavController
+
+    val FragmentManager.currentNavigationFragment: Fragment?
+        get() = primaryNavigationFragment?.childFragmentManager?.fragments?.first()
+
+//    val homeActivityViewModel by viewModels<HomeActivityViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
@@ -30,7 +50,7 @@ class HomeActivity : AppCompatActivity() {
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_home)
+        navController = findNavController(R.id.nav_host_fragment_activity_home)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -43,6 +63,30 @@ class HomeActivity : AppCompatActivity() {
 
         if(sharedPreferences.getString(Constants.KEY_PHRASE, null) != null){
             startActivity(Intent(this, VerifyNewWalletActivity::class.java))
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode,data)
+        if(requestCode == REQUEST_CHECK_SETTINGS) {
+            when(resultCode) {
+                Activity.RESULT_OK -> {
+                    val fragment = supportFragmentManager.currentNavigationFragment
+                    if(fragment is HomeFragment)
+                        fragment.updateLocationUI()
+                    else if(fragment is ScannerFragment)
+                        fragment.updateLocationUI()
+                }
+                else -> {
+                    val fragment = supportFragmentManager.currentNavigationFragment
+                    if(fragment is HomeFragment) {
+                        fragment.showTurnOnLocationDialog()
+                    }
+                    else if(fragment is ScannerFragment) {
+                        fragment.onDestroyView()
+                    }
+                }
+            }
         }
     }
 }

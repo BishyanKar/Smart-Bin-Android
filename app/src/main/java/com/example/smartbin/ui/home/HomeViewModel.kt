@@ -12,7 +12,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val homeRepo: HomeRepo): ViewModel() {
 
-    fun getAllBins(): LiveData<ApiResponse<BinResponse>> {
-        return homeRepo.getAllBins()
+    var binsLoaded: Boolean = false
+
+    fun getAllBins(lat: Double, lng: Double): LiveData<ApiResponse<BinResponse>> {
+        return homeRepo.getAllBins(lat, lng)
     }
 }

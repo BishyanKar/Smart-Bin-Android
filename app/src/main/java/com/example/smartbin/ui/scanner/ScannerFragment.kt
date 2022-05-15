@@ -77,19 +77,6 @@ class ScannerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestMultiplePermissionForScanner = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            var flag = true
-            permissions.entries.forEach { permission ->
-                if(!permission.value)
-                    flag = false
-            }
-            if(flag){
-                updateLocationUI()
-                startQRScanner()
-            }
-        }
     }
 
     override fun onCreateView(
@@ -107,6 +94,30 @@ class ScannerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+
+                for (location in locationResult.locations) {
+                    // Update UI with location data
+                    // ...
+                    Timber.d("$location")
+                }
+            }
+        }
+        requestMultiplePermissionForScanner = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            var flag = true
+            permissions.entries.forEach { permission ->
+                if(!permission.value)
+                    flag = false
+            }
+            if(flag){
+                updateLocationUI()
+                startQRScanner()
+            }
+        }
         scannerView = binding.scannerView
         mCodeScanner = CodeScanner(requireContext(), scannerView!!)
         mCodeScanner?.decodeCallback = DecodeCallback { result ->
@@ -138,17 +149,6 @@ class ScannerFragment : Fragment() {
         })
         mSocket?.connect()
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-
-                for (location in locationResult.locations) {
-                    // Update UI with location data
-                    // ...
-                    Timber.d("$location")
-                }
-            }
-        }
     }
 
     override fun onStart() {
@@ -171,7 +171,7 @@ class ScannerFragment : Fragment() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun updateLocationUI() {
+    fun updateLocationUI() {
         fusedLocationProviderClient!!.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
                 try {
