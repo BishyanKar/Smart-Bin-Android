@@ -93,7 +93,7 @@
                 app:layout_constraintHorizontal_bias="0"
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/shape_circlular_rectangle"
+                android:background="@drawable/bg_profile_show_wallet"
                 android:elevation="2dp"
                 >
 

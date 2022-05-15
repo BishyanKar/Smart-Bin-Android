@@ -24,7 +24,7 @@ interface ApiService {
     fun connectToNewWallet(): LiveData<ApiResponse<ProfileResponse>>
 
     @POST("users/connect")
-    fun connectToExistingWallet(@Body phrase: Phrase): LiveData<ApiResponse<ProfileResponse>>
+    fun connectToExistingWallet(@Body body: HashMap<String, Any>): LiveData<ApiResponse<ProfileResponse>>
 
     @POST("users/transfer")
     fun transfer()

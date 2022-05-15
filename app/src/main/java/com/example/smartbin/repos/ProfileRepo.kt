@@ -21,7 +21,9 @@ class ProfileRepo @Inject constructor(private val apiService: ApiService){
     }
 
     fun connectToExistingWallet(phrase: String): LiveData<ApiResponse<ProfileResponse>> {
-        return apiService.connectToExistingWallet(Phrase(phrase))
+        val map = HashMap<String, Any>()
+        map["phrase"] = phrase
+        return apiService.connectToExistingWallet(map)
     }
 
     fun getWalletBalance(): LiveData<ApiResponse<BalanceResponse>> {

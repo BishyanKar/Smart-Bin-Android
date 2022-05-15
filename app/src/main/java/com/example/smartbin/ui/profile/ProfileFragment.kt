@@ -80,8 +80,13 @@ class ProfileFragment : Fragment() {
             }
         }
         binding.llCoin.setOnClickListener {
-            toggleProgressBar(true)
-            getWalletBalance()
+            if(user.wallet!=null) {
+                toggleProgressBar(true)
+                getWalletBalance()
+            }
+            else {
+                showNoWalletDialog()
+            }
         }
     }
 

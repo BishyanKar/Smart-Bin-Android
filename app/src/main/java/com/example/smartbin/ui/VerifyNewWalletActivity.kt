@@ -17,6 +17,7 @@ import com.example.smartbin.adapter.ChipAdapterListener
 import com.example.smartbin.adapter.ChipSelectedAdapter
 import com.example.smartbin.databinding.ActivityVerifyNewWalletBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -59,7 +60,12 @@ class VerifyNewWalletActivity : AppCompatActivity(), ChipAdapterListener {
             setChipAdapterData()
         }
         binding.btnProceed.setOnClickListener {
-            if(testString == phraseSelected){
+            for(word in chipSelectedAdapter.currentList){
+                phraseSelected += "${word.trim()} "
+            }
+            phraseSelected = phraseSelected.trim()
+            Timber.tag("Phrase").d( "$testString, $phraseSelected")
+            if(testString?.trim() == phraseSelected){
                 editor = sharedPreferences.edit()
                 editor.putString(Constants.KEY_PHRASE, null)
                 editor.apply()
@@ -155,10 +161,6 @@ class VerifyNewWalletActivity : AppCompatActivity(), ChipAdapterListener {
         chipSelectedAdapter.setData(currentList)
         if(currentList.size == 12) {
             toggleProceedButton(true)
-            for(word in currentList){
-                "$phraseSelected$word "
-            }
-            phraseSelected.trim()
         }
         else toggleProceedButton(false)
     }
