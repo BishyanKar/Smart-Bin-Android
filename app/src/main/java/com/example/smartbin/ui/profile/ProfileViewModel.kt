@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.smartbin.api.ApiResponse
-import com.example.smartbin.model.remote.BalanceResponse
-import com.example.smartbin.model.remote.BinResponse
-import com.example.smartbin.model.remote.ProfileResponse
-import com.example.smartbin.model.remote.TransactionResponse
+import com.example.smartbin.model.remote.*
 import com.example.smartbin.repos.ProfileRepo
 import com.google.android.gms.common.api.Api
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,8 +31,8 @@ class ProfileViewModel @Inject constructor(private val profileRepo: ProfileRepo)
         return profileRepo.connectToExistingWallet(phrase)
     }
 
-    fun transfer() {
-
+    fun transfer(): LiveData<ApiResponse<TransferResponse>>{
+        return profileRepo.transfer()
     }
 
     fun getWalletBalance(): LiveData<ApiResponse<BalanceResponse>> {

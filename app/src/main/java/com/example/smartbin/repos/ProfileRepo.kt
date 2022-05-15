@@ -30,8 +30,8 @@ class ProfileRepo @Inject constructor(private val apiService: ApiService){
         return apiService.getWalletBalance()
     }
 
-    fun transfer() {
-
+    fun transfer(): LiveData<ApiResponse<TransferResponse>> {
+        return apiService.transfer()
     }
 
     fun disconnectWallet(): LiveData<ApiResponse<ProfileResponse>> {

@@ -7,6 +7,7 @@ object Constants {
     const val KEY_USER = "KEY_USER"
     const val EVENT_DISPOSE = "dispose"
     const val EVENT_SUCCESS = "success"
-    const val EVENT_TRANSACTION_COMPLETE = "transactionComplete"
+    const val EVENT_CUSTOM_ERROR = "custom-error"
+    const val EVENT_TRANSACTION_COMPLETE = "transactionCompleted"
     const val KEY_PHRASE = "KEY_PHRASE"
 }

@@ -102,6 +102,8 @@ class ScannerFragment : Fragment() {
                     // Update UI with location data
                     // ...
                     Timber.d("$location")
+                    currentLatitude = location.latitude
+                    currentLongitude = location.longitude
                 }
             }
         }
@@ -139,6 +141,11 @@ class ScannerFragment : Fragment() {
             e.message
         }
         mSocket?.on(Constants.EVENT_SUCCESS, Emitter.Listener {
+            val data = it[0]
+            Timber.d("$data")
+        })
+
+        mSocket?.on(Constants.EVENT_CUSTOM_ERROR, Emitter.Listener {
             val data = it[0]
             Timber.d("$data")
         })

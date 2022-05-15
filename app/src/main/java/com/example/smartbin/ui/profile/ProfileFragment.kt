@@ -81,13 +81,42 @@ class ProfileFragment : Fragment() {
         }
         binding.llCoin.setOnClickListener {
             if(user.wallet!=null) {
-                toggleProgressBar(true)
+                toggleProgressBarOnly(true)
                 getWalletBalance()
             }
             else {
                 showNoWalletDialog()
             }
         }
+    }
+
+    private fun transfer() {
+        profileViewModel.transfer().observe(viewLifecycleOwner, Observer { response ->
+            if(response.body != null){
+                val transferResponse = response.body
+
+                if(!transferResponse.error){
+                    showPositiveDialog("Coins transferred successfully", DialogInterface.OnCancelListener {
+                        //do nothing
+                    }, "")
+                }
+                else {
+                    Timber.d(transferResponse.message)
+                    showNegativeDialog("Transfer failed", DialogInterface.OnCancelListener {
+                        //do nothing
+                    })
+                    Toast.makeText(context, "${transferResponse.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            else {
+                Timber.e(response.errorMessage)
+                showNegativeDialog("Transfer failed", DialogInterface.OnCancelListener {
+                    //do nothing
+                })
+                Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
+            }
+            toggleProgressBarOnly(false)
+        })
     }
 
     private fun showRedeemDialog() {
@@ -100,7 +129,9 @@ class ProfileFragment : Fragment() {
         val dialog = builder.create()
 
         btnConfirm.setOnClickListener {
-            //todo call transfer api
+            toggleProgressBarOnly(true)
+            dialog.dismiss()
+            transfer()
         }
 
         btnCancel.setOnClickListener {
@@ -221,7 +252,7 @@ class ProfileFragment : Fragment() {
                 Timber.d(response.errorMessage)
                 Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
             }
-            toggleProgressBar(false)
+            toggleProgressBarOnly(false)
         })
     }
 
@@ -240,7 +271,7 @@ class ProfileFragment : Fragment() {
 
         btnDisconnect.setOnClickListener {
             dialog.dismiss()
-            toggleProgressBar(true)
+            toggleProgressBarOnly(true)
             disconnectWallet()
         }
 
@@ -276,7 +307,7 @@ class ProfileFragment : Fragment() {
                 })
                 Toast.makeText(context, "${response.errorMessage}", Toast.LENGTH_SHORT).show()
             }
-            toggleProgressBar(false)
+            toggleProgressBarOnly(false)
         })
     }
 
@@ -313,6 +344,15 @@ class ProfileFragment : Fragment() {
         else {
             binding.progressCircular.visibility = View.GONE
             binding.nestedScrollView.visibility = View.VISIBLE
+        }
+    }
+
+    private fun toggleProgressBarOnly(flag: Boolean) {
+        if(flag) {
+            binding.progressCircular.visibility = View.VISIBLE
+        }
+        else {
+            binding.progressCircular.visibility = View.GONE
         }
     }
 
