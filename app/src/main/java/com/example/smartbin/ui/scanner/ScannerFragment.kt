@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.IntentSender.SendIntentException
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
@@ -36,6 +37,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -45,6 +47,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.net.URISyntaxException
 import java.util.*
+import javax.inject.Inject
 import kotlin.math.min
 
 
@@ -57,6 +60,9 @@ class ScannerFragment : Fragment() {
     private var locationPermissionGranted: Boolean = false
 
     private val scannerViewModel by viewModels<ScannerViewModel>()
+
+    @Inject lateinit var sharedPreferences: SharedPreferences
+    @Inject lateinit var gson: Gson
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var locationCallback: LocationCallback? = null
@@ -73,6 +79,8 @@ class ScannerFragment : Fragment() {
     var scannerView: CodeScannerView? = null
 
     private lateinit var requestMultiplePermissionForScanner: ActivityResultLauncher<Array<String>>
+
+    private lateinit var authToken: String
 
 
     private var mSocket: Socket? = null
@@ -137,9 +145,9 @@ class ScannerFragment : Fragment() {
                     Toast.LENGTH_LONG).show()
             }
         }
-
+        authToken = sharedPreferences.getString(Constants.KEY_AUTH_TOKEN, null)!!
         try {
-            mSocket = IO.socket("http://chat.socket.io")
+            mSocket = IO.socket("${Constants.BASE_URL}user?authorization=$authToken")
         } catch (e: URISyntaxException) {
             e.message
         }
@@ -151,17 +159,21 @@ class ScannerFragment : Fragment() {
         mSocket?.on(Constants.EVENT_CUSTOM_ERROR, Emitter.Listener {
             val data = it[0]
             Timber.d("$data")
-            showNegativeDialog("Dispose was not successful", DialogInterface.OnCancelListener {
-                //do nothing
-            })
+            activity?.runOnUiThread {
+                showNegativeDialog("Dispose was not successful", DialogInterface.OnCancelListener {
+                    //do nothing
+                })
+            }
         })
 
         mSocket?.on(Constants.EVENT_TRANSACTION_COMPLETE, Emitter.Listener {
             val data = it[0]
             Timber.d("$data")
-            showPositiveDialog("Dispose completed successfully", DialogInterface.OnCancelListener {
-                activity?.onBackPressed()
-            })
+            activity?.runOnUiThread {
+                showPositiveDialog("Dispose completed successfully", DialogInterface.OnCancelListener {
+                    activity?.onBackPressed()
+                })
+            }
         })
         mSocket?.connect()
 
@@ -180,9 +192,9 @@ class ScannerFragment : Fragment() {
     private fun startDispose(binId: String) {
         if(currentLatitude !=null && currentLongitude != null)
         {
-            val dispose = Dispose(binId, arrayOf(currentLatitude, currentLongitude), wasteType)
-
-            mSocket?.emit(Constants.EVENT_DISPOSE, dispose)
+            val dispose = Dispose(binId.trim(), arrayOf(currentLongitude, currentLatitude), wasteType)
+            mSocket?.emit(Constants.EVENT_DISPOSE, JSONObject(gson.toJson(dispose)))
+            showDisposeDialog()
         }
     }
 

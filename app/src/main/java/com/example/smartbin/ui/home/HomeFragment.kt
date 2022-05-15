@@ -164,7 +164,7 @@ class HomeFragment : Fragment(), BinAdapterListener {
 
     private fun initRecyclerView() {
         binAdapter = BinAdapter(this)
-        binAdapter.setLocationData(22.5394422,88.3260267)
+        binAdapter.setLocationData(0.0,0.0)
         binding.rvAllBins.layoutManager = LinearLayoutManager(context)
         binding.rvAllBins.adapter = binAdapter
     }
