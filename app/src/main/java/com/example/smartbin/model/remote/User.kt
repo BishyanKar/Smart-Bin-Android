@@ -30,7 +30,7 @@ class User {
 
     @SerializedName("ourCoins")
     @Expose
-    var ourCoins: Int? = null
+    var ourCoins: Double? = null
 
     @SerializedName("createdAt")
     @Expose

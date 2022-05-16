@@ -22,11 +22,11 @@ class Bin {
 
     @SerializedName("filled")
     @Expose
-    var filled: Int? = null
+    var filled: Double? = null
 
     @SerializedName("height")
     @Expose
-    var height: Int? = null
+    var height: Double? = null
 
     @SerializedName("createdAt")
     @Expose

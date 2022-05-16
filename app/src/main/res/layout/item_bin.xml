@@ -36,6 +36,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="150dp"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintStart_toEndOf="@id/iv_location"
             app:layout_constraintEnd_toStartOf="@id/distance"
             app:layout_constraintTop_toTopOf="parent"

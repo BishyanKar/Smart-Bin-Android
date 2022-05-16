@@ -160,7 +160,7 @@ class ScannerFragment : Fragment() {
             val data = it[0]
             Timber.d("$data")
             activity?.runOnUiThread {
-                showNegativeDialog("Dispose was not successful", DialogInterface.OnCancelListener {
+                showNegativeDialog("Dispose was not successful.\nReason:  $data", DialogInterface.OnCancelListener {
                     //do nothing
                 })
             }
@@ -170,7 +170,7 @@ class ScannerFragment : Fragment() {
             val data = it[0]
             Timber.d("$data")
             activity?.runOnUiThread {
-                showPositiveDialog("Dispose completed successfully", DialogInterface.OnCancelListener {
+                showPositiveDialog("Dispose completed successfully.\nYou received $data coins", DialogInterface.OnCancelListener {
                     activity?.onBackPressed()
                 })
             }

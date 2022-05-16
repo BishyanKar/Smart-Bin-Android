@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
         }
         else {
             binding.progressCircular.visibility = View.GONE
-            Toast.makeText(this, "Some error occurred", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Some error occurred", Toast.LENGTH_SHORT).show()
         }
     }
 

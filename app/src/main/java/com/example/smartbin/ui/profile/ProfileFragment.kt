@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
 import javax.inject.Inject
 import timber.log.Timber
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
@@ -166,6 +167,7 @@ class ProfileFragment : Fragment() {
             val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip: ClipData = ClipData.newPlainText("phrase", phrase)
             clipboard.setPrimaryClip(clip)
+            Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
         }
 
         val dialog = builder.create()
@@ -241,7 +243,7 @@ class ProfileFragment : Fragment() {
                 val balanceResponse = response.body
 
                 if(!balanceResponse.error){
-                    showWalletDialog(balanceResponse.coins.toString(), balanceResponse.wallet!!.balance)
+                    showWalletDialog("${balanceResponse.coins}", balanceResponse.wallet!!.balance)
                 }
                 else {
                     Timber.d(balanceResponse.message)
@@ -397,7 +399,7 @@ class ProfileFragment : Fragment() {
     private fun initUI() {
         binding.tvName.text = user.name
         binding.tvEmail.text = user.email
-        binding.tvCoin.text = "${user.ourCoins}"
+        binding.tvCoin.text = ((user.ourCoins?.times(10.0))?.roundToInt()?.div(10.0)).toString()
         try {
             Glide
                 .with(requireActivity())

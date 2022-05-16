@@ -51,13 +51,18 @@ class BinAdapter(private val binAdapterListener: BinAdapterListener): ListAdapte
             binding.tvLocation.text = "${bin.name}, ${bin.location?.address}, ${bin.location?.city}, ${bin.location?.state}, ${bin.location?.country}"
             val lat2: Double = bin.location?.geoLocation?.coordinates?.get(0)!!
             val lng2: Double = bin.location?.geoLocation?.coordinates?.get(1)!!
-            binding.distance.text = "${calculateDistance(lat, lng, lat2, lng2)/1000} km"
+            val distance = calculateDistance(lat, lng, lat2, lng2)
+            val distanceKm = (distance/1000)
+            if(distanceKm * .1f == 0.0){
+                binding.distance.text = "${distance.roundToLong()} m"
+            }
+            else binding.distance.text = "${distance*.1f} km"
             binding.llCoin.setOnClickListener {
                 binAdapterListener.onItemClick(lat2, lng2)
             }
         }
 
-        private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Long {
+        private fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
             val theta = lon1 - lon2
             var dist = (sin(deg2rad(lat1))
                     * sin(deg2rad(lat2))
@@ -67,7 +72,7 @@ class BinAdapter(private val binAdapterListener: BinAdapterListener): ListAdapte
             dist = acos(dist)
             dist = rad2deg(dist)
             dist *= 60 * 1.1515
-            return dist.roundToLong()
+            return dist
         }
 
         private fun deg2rad(deg: Double): Double {

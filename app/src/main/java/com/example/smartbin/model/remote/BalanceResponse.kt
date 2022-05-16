@@ -19,5 +19,5 @@ class BalanceResponse {
 
     @SerializedName("coins")
     @Expose
-    var coins: Int = 0
+    var coins: Double = 0.0
 }
