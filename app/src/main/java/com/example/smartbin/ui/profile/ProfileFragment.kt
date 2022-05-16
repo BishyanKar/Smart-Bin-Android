@@ -98,7 +98,8 @@ class ProfileFragment : Fragment() {
 
                 if(!transferResponse.error){
                     showPositiveDialog("Coins transferred successfully", DialogInterface.OnCancelListener {
-                        //do nothing
+                        toggleProgressBar(true)
+                        initUser()
                     }, "")
                 }
                 else {
