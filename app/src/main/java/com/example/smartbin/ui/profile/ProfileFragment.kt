@@ -3,11 +3,9 @@ package com.example.smartbin.ui.profile
 import android.app.AlertDialog
 import android.content.*
 import android.os.Bundle
-import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,9 +21,9 @@ import com.example.smartbin.ui.ConnectAndVerifyActivity
 import com.example.smartbin.ui.VerifyNewWalletActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
-import javax.inject.Inject
 import timber.log.Timber
+import java.math.BigInteger
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -244,7 +242,12 @@ class ProfileFragment : Fragment() {
                 val balanceResponse = response.body
 
                 if(!balanceResponse.error){
-                    showWalletDialog("${balanceResponse.coins}", balanceResponse.wallet!!.balance)
+                    var hex = balanceResponse.wallet!!.balance
+                    hex = hex.substring(2)
+                    val b1 = hex.toBigInteger(16)
+                    val b2 = BigInteger("10000000000000000000")
+                    val d = b1.toDouble() / b2.toDouble()
+                    showWalletDialog("${balanceResponse.coins}", "$d")
                 }
                 else {
                     Timber.d(balanceResponse.message)
