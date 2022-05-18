@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartbin.R
 import com.example.smartbin.databinding.LayoutItemHistoryBinding
 import com.example.smartbin.model.remote.Transaction
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TransactionAdapter(private val context: Context): ListAdapter<Transaction, TransactionAdapter.TransactionVH>(DiffUtilItemCallback) {
 
@@ -38,6 +41,13 @@ class TransactionAdapter(private val context: Context): ListAdapter<Transaction,
             binding.tvCategory.text = transaction.wasteType
             binding.tvCoin.text = "${transaction.coins}"
             binding.tvRefNo.text = transaction.id
+
+            val originalFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+            val targetFormat: DateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+            val date = transaction.createdAt?.let { originalFormat.parse(it) }
+            val formattedDate = date?.let { targetFormat.format(it) }
+
+            binding.tvDate.text = formattedDate
 
             when(transaction.status) {
                 "COMPLETED" -> {
