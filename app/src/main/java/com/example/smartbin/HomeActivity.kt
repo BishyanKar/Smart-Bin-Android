@@ -89,4 +89,8 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun openProfile() {
+        navController.navigate(R.id.navigation_notifications)
+    }
 }

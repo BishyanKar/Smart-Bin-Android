@@ -41,7 +41,10 @@ class TransactionAdapter(private val context: Context): ListAdapter<Transaction,
 
             when(transaction.status) {
                 "COMPLETED" -> {
-                    binding.ivIconReceived.setColorFilter(context.getColor(R.color.material_green_800))
+                    if(transaction.coins!! < 0.0){
+                        binding.ivIconReceived.setColorFilter(context.getColor(R.color.material_red_800))
+                    }
+                    else binding.ivIconReceived.setColorFilter(context.getColor(R.color.material_green_800))
                 }
                 "PENDING" -> {
                     binding.ivIconReceived.setColorFilter(context.getColor(R.color.material_yellow_500))

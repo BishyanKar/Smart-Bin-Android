@@ -28,6 +28,7 @@ import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.example.smartbin.Constants
+import com.example.smartbin.HomeActivity
 import com.example.smartbin.R
 import com.example.smartbin.databinding.FragmentScannerBinding
 import com.example.smartbin.model.remote.Dispose
@@ -154,6 +155,11 @@ class ScannerFragment : Fragment() {
         mSocket?.on(Constants.EVENT_SUCCESS, Emitter.Listener {
             val data = it[0]
             Timber.d("$data")
+            if(data as Boolean){
+                activity?.runOnUiThread {
+                    showDisposeDialog()
+                }
+            }
         })
 
         mSocket?.on(Constants.EVENT_CUSTOM_ERROR, Emitter.Listener {
@@ -161,7 +167,7 @@ class ScannerFragment : Fragment() {
             Timber.d("$data")
             activity?.runOnUiThread {
                 showNegativeDialog("Dispose was not successful.\nReason:  $data", DialogInterface.OnCancelListener {
-                    //do nothing
+                    activity?.onBackPressed()
                 })
             }
         })
@@ -171,7 +177,7 @@ class ScannerFragment : Fragment() {
             Timber.d("$data")
             activity?.runOnUiThread {
                 showPositiveDialog("Dispose completed successfully.\nYou received $data coins", DialogInterface.OnCancelListener {
-                    activity?.onBackPressed()
+                    (activity as HomeActivity).openProfile()
                 })
             }
         })
@@ -194,7 +200,6 @@ class ScannerFragment : Fragment() {
         {
             val dispose = Dispose(binId.trim(), arrayOf(currentLongitude, currentLatitude), wasteType)
             mSocket?.emit(Constants.EVENT_DISPOSE, JSONObject(gson.toJson(dispose)))
-            showDisposeDialog()
         }
     }
 
