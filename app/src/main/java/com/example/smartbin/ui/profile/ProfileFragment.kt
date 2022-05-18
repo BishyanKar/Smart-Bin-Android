@@ -385,8 +385,9 @@ class ProfileFragment : Fragment() {
                         totalWeights += transaction.weight!!
                     }
                 }
+
                 if(totalWeights < 100)
-                    binding.tvWeightMeter.text = "$totalWeights g"
+                    binding.tvWeightMeter.text = "${totalWeights.times(10.0).roundToInt().div(10.0)} g"
                 else {
                     val wInKg = totalWeights/1000
                     binding.tvWeightMeter.text = wInKg.times(10.0).roundToInt().div(10.0).toString()
