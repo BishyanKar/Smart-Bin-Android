@@ -164,7 +164,6 @@ class HomeFragment : Fragment(), BinAdapterListener {
 
     private fun initRecyclerView() {
         binAdapter = BinAdapter(this)
-        binAdapter.setLocationData(0.0,0.0)
         binding.rvAllBins.layoutManager = LinearLayoutManager(context)
         binding.rvAllBins.adapter = binAdapter
     }
@@ -176,6 +175,7 @@ class HomeFragment : Fragment(), BinAdapterListener {
             activity?.finish()
             return
         }
+        binAdapter.setLocationData(currentLatitude!!,currentLongitude!!)
         homeViewModel.getAllBins(currentLatitude!!, currentLongitude!!).observe(viewLifecycleOwner, Observer { response ->
             if(response.body!=null) {
                 val bins = response.body.bins

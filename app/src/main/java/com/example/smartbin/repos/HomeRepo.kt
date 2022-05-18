@@ -10,7 +10,6 @@ class HomeRepo @Inject constructor(private val apiService: ApiService){
     fun getAllBins(lat: Double, lng: Double): LiveData<ApiResponse<BinResponse>> {
         //dummy data for test 22.5394422,88.3260267
         //dummy data for test 0,0
-        //todo change to lat, lng
-        return apiService.getAllBins(0.0,0.0)
+        return apiService.getAllBins(lat,lng)
     }
 }

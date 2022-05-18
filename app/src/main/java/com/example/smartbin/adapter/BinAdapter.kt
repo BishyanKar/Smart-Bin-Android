@@ -49,8 +49,8 @@ class BinAdapter(private val binAdapterListener: BinAdapterListener): ListAdapte
         fun bind(bin: Bin) {
             binding.distance.text = "${bin.relativeDistance} km"
             binding.tvLocation.text = "${bin.name}, ${bin.location?.address}, ${bin.location?.city}, ${bin.location?.state}, ${bin.location?.country}"
-            val lat2: Double = bin.location?.geoLocation?.coordinates?.get(0)!!
-            val lng2: Double = bin.location?.geoLocation?.coordinates?.get(1)!!
+            val lat2: Double = bin.location?.geoLocation?.coordinates?.get(1)!!
+            val lng2: Double = bin.location?.geoLocation?.coordinates?.get(0)!!
             val distance = calculateDistance(lat, lng, lat2, lng2)
             val distanceKm = (distance/1000)
             if(distanceKm * .1f == 0.0){
