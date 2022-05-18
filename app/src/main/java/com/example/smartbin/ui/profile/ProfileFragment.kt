@@ -245,7 +245,7 @@ class ProfileFragment : Fragment() {
                     var hex = balanceResponse.wallet!!.balance
                     hex = hex.substring(2)
                     val b1 = hex.toBigInteger(16)
-                    val b2 = BigInteger("10000000000000000000")
+                    val b2 = BigInteger("1000000000000000000")
                     val d = b1.toDouble() / b2.toDouble()
                     showWalletDialog("${balanceResponse.coins}", "$d")
                 }
